@@ -1,0 +1,95 @@
+```html
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Login</title>
+
+<style>
+body {
+    font-family: Arial;
+    background: #0f172a;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.box {
+    background: white;
+    padding: 30px;
+    border-radius: 10px;
+    width: 300px;
+}
+
+input {
+    width: 100%;
+    margin-bottom: 10px;
+    padding: 10px;
+}
+
+button {
+    width: 100%;
+    padding: 10px;
+    background: #2563eb;
+    color: white;
+    border: none;
+}
+
+#msg {
+    margin-top: 10px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="box">
+    <h3>Login</h3>
+
+    <input type="email" id="email" placeholder="Email">
+    <input type="password" id="password" placeholder="Password">
+
+    <button onclick="login()">Ingresar</button>
+
+    <div id="msg"></div>
+</div>
+
+<script>
+function login() {
+    const email = document.getElementById("email").value;
+    const password = document.getElementById("password").value;
+
+    fetch("login.php", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ email, password })
+    })
+    .then(res => res.json())
+    .then(data => {
+        const msg = document.getElementById("msg");
+
+        if (data.status === "ok") {
+            msg.innerHTML = "<span style='color:green'>Login correcto</span>";
+
+            // 🚀 REDIRECCIÓN AL DASHBOARD
+            setTimeout(() => {
+                window.location.href = "index.php";
+            }, 1000);
+
+        } else {
+            msg.innerHTML = "<span style='color:red'>Credenciales incorrectas</span>";
+        }
+    })
+    .catch(() => {
+        document.getElementById("msg").innerHTML =
+            "<span style='color:red'>Error de conexión</span>";
+    });
+}
+</script>
+
+</body>
+</html>
+```
